@@ -51,8 +51,8 @@ module.exports = defineConfig({
 
   use: {
     trace: lightReport ? 'off' : 'on-first-retry',
-    screenshot: lightReport ? 'only-on-failure' : 'on',
-    video: lightReport ? 'off' : 'on',
+    screenshot: 'on',
+    video: 'on',
   },
 
   projects: [

@@ -84,70 +84,32 @@ module.exports = defineConfig({
     // },
   ],
 
-  reporter: [
-    [
-      '@zebrunner/javascript-agent-playwright',
-      {
-        enabled: process.env.REPORTING_ENABLED === 'true',
-        projectKey: process.env.REPORTING_PROJECT_KEY || 'DEF',
-        server: {
-          hostname: process.env.REPORTING_SERVER_HOSTNAME || 'https://yourCompany.zebrunner.com',
-          accessToken: process.env.REPORTING_SERVER_ACCESS_TOKEN || 'yourAccessToken',
-        },
-        launch: {
-          displayName: process.env.REPORTING_LAUNCH_DISPLAY_NAME || 'Playwright launch',
-          build: '1.0.0',
-          environment: 'Local',
-          treatSkipsAsFailures: true,
-        },
-        logs: {
-          ignorePlaywrightSteps: false,
-          useLinesFromSourceCode: true,
-          ignoreConsole: false,
-          ignoreCustom: false,
-          ignoreManualScreenshots: false,
-          ignoreAutoScreenshots: lightReport,
-        },
-        milestone: {
-          id: null,
-          name: null,
-        },
-        notifications: {
-          notifyOnEachFailure: false,
-          slackChannels: process.env.REPORTING_NOTIFICATION_SLACK_CHANNELS || '',
-          teamsChannels: process.env.REPORTING_NOTIFICATION_MS_TEAMS_CHANNELS || '',
-          emails: process.env.REPORTING_NOTIFICATION_EMAILS || '',
-        },
-        tcm: {
-          zebrunner: {
-            pushResults: false,
-            pushInRealTime: false,
-            testRunId: 1,
-          },
-          testRail: {
-            pushResults: false,
-            pushInRealTime: false,
-            suiteId: 1,
-            runId: 1,
-            includeAllTestCasesInNewRun: false,
-            runName: 'New Demo Run',
-            milestoneName: 'Demo Milestone',
-            assignee: 'tester@mycompany.com',
-          },
-          xray: {
-            pushResults: false,
-            pushInRealTime: false,
-            executionKey: 'ZEB-1',
-          },
-          zephyr: {
-            pushResults: false,
-            pushInRealTime: false,
-            jiraProjectKey: 'ZEB',
-            testCycleKey: 'ZEB-R1',
-          },
-        },
-        pwConcurrentTasks: 10,
-      },
-    ],
-  ],
+reporter: [[
+  '@zebrunner/javascript-agent-playwright',
+  {
+    enabled: true,
+    projectKey: 'DEF',
+    server: {
+      hostname: process.env.REPORTING_SERVER_HOSTNAME,
+      accessToken: process.env.REPORTING_SERVER_ACCESS_TOKEN,
+    },
+    launch: {
+      displayName: 'Chrome WEB',
+      build: '1.0',
+      treatSkipsAsFailures: false,
+    },
+    logs: {
+      format: 'playwright-title',
+      includeDuration: false,
+      includeLocation: false,
+      maxSourceLines: 5,
+      maxMessageLength: 8000,
+      ignorePlaywrightSteps: false,
+      ignoreConsole: false,
+      ignoreCustom: false,
+      ignoreManualScreenshots: false,
+      ignoreAutoScreenshots: false,
+    },
+  },
+]],
 });

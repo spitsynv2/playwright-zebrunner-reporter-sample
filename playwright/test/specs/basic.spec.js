@@ -24,13 +24,13 @@ const docPages = [
 
 const parsedTestCount = Number.parseInt(process.env.PW_TEST_COUNT || '', 10);
 const generatedTestCount = Number.isFinite(parsedTestCount) && parsedTestCount > 0 ? parsedTestCount : 25;
-const attachManualScreenshots = process.env.PW_MANUAL_SCREENSHOTS === 'true';
+const attachManualScreenshots = process.env.PW_MANUAL_SCREENSHOTS !== 'false';
 
 async function attachStepScreenshot(page) {
   if (!attachManualScreenshots) {
     return;
   }
-  currentTest.attachScreenshot(await page.screenshot());
+  currentTest.attachScreenshot(await page.screenshot({ fullPage: true, type: 'png' }));
 }
 
 async function docsWalkthrough(page, testNumber) {
@@ -38,6 +38,7 @@ async function docsWalkthrough(page, testNumber) {
     const doc = docPages[i];
     currentTest.log.info(`Step ${i + 1}/${docPages.length}: Opening ${doc.label}`);
     await page.goto(doc.url);
+    await attachStepScreenshot(page);
 
     if (doc.titlePattern) {
       await expect(page).toHaveTitle(doc.titlePattern);
@@ -54,17 +55,16 @@ async function docsWalkthrough(page, testNumber) {
     await page.waitForTimeout(400);
     await attachStepScreenshot(page);
 
-    if (i % 2 === 0) {
-      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-      await page.waitForTimeout(400);
-      currentTest.log.info(`Scrolled to bottom of ${doc.label}`);
-      await attachStepScreenshot(page);
-    }
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await page.waitForTimeout(400);
+    currentTest.log.info(`Scrolled to bottom of ${doc.label}`);
+    await attachStepScreenshot(page);
   }
 
   currentTest.log.info('Returning to Installation page for tab interactions');
   await page.goto('https://playwright.dev/docs/intro');
   await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+  await attachStepScreenshot(page);
 
   const tabs = ['npm', 'yarn', 'pnpm'];
   for (const tabName of tabs) {
@@ -77,6 +77,7 @@ async function docsWalkthrough(page, testNumber) {
   }
 
   currentTest.log.info(`Test ${testNumber}: walkthrough finished — ${docPages.length} docs pages visited`);
+  await attachStepScreenshot(page);
 }
 
 test.describe('Playwright website tests', () => {

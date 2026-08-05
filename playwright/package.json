@@ -6,7 +6,7 @@
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@playwright/test": "^1.58.2",
-    "@zebrunner/javascript-agent-playwright": "^1.0.2"
+    "@zebrunner/javascript-agent-playwright": "github:spitsynv2/javascript-agent-playwright#1d113eba4d856fb224bd510f132df07ddb20666a"
   },
   "scripts": {
     "test": "npx playwright test"

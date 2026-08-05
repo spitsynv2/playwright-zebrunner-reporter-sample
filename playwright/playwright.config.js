@@ -109,6 +109,8 @@ reporter: [[
       ignoreCustom: false,
       ignoreManualScreenshots: false,
       ignoreAutoScreenshots: false,
+      pushInRealTime: true,
+      pushResults: false,
     },
   },
 ]],

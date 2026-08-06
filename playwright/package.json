@@ -1,7 +1,7 @@
 {
-  "name": "sample-playwright",
+  "name": "playwright-zebrunner-reporter-sample",
   "version": "1.0.0",
-  "description": "Playwright agent sample of Zebrunner usage",
+  "description": "Playwright samples using Zebrunner reporter",
   "main": "index.js",
   "devDependencies": {
     "@types/node": "^22.0.0",

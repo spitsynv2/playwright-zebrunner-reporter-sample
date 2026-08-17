@@ -3,6 +3,15 @@ const { currentTest, currentLaunch, zebrunner } = require('@zebrunner/javascript
 
 test.describe('Playwright website tests', () => {
 
+  test('navigate to URL from environment', async ({ page }) => {
+    const targetUrl = process.env.TARGET_URL;
+    test.skip(!targetUrl, 'TARGET_URL is not set');
+
+    currentTest.log.info(`Navigating to ${new URL(targetUrl).origin}`);
+    const response = await page.goto(targetUrl, { waitUntil: 'domcontentloaded' });
+    currentTest.log.info(`Navigation completed with HTTP ${response?.status() ?? 'unknown'}`);
+  });
+
   test('has title [@small, @fast]', async ({ page }) => {
     zebrunner.testCaseKey('DEF-1');
     currentTest.setMaintainer('admin');
